@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exam", "Exam\Exam.csproj", "{6D04D1F3-20C3-494D-A25E-ADDA7A86EAF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exam", "Exam\Exam.csproj", "{6D04D1F3-20C3-494D-A25E-ADDA7A86EAF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCrowlerHelper", "WebCrowlerHelper\WebCrowlerHelper.csproj", "{1539DDA3-4537-48E4-96B8-98A879206185}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebCrowlerHelper", "WebCrowlerHelper\WebCrowlerHelper.csproj", "{1539DDA3-4537-48E4-96B8-98A879206185}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NunitTests", "NunitTests\NunitTests.csproj", "{29D6998B-35F8-41C3-86EA-6909FA8694C9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{D6876245-11FA-4A8B-BDAB-CC7853EBBAEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp", "TestApp\TestApp.csproj", "{D6876245-11FA-4A8B-BDAB-CC7853EBBAEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{1539DDA3-4537-48E4-96B8-98A879206185}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1539DDA3-4537-48E4-96B8-98A879206185}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1539DDA3-4537-48E4-96B8-98A879206185}.Release|Any CPU.Build.0 = Release|Any CPU
-		{29D6998B-35F8-41C3-86EA-6909FA8694C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{29D6998B-35F8-41C3-86EA-6909FA8694C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{29D6998B-35F8-41C3-86EA-6909FA8694C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{29D6998B-35F8-41C3-86EA-6909FA8694C9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D6876245-11FA-4A8B-BDAB-CC7853EBBAEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D6876245-11FA-4A8B-BDAB-CC7853EBBAEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6876245-11FA-4A8B-BDAB-CC7853EBBAEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
