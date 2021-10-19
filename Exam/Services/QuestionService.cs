@@ -3,23 +3,24 @@ using Exam.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Exam.Services
 {
-    public class QuizService : IServiceInterface<Quiz>
+    public class QuestionService : IServiceInterface<Question>
     {
-        public int AddOrUpdate(Quiz model)
+        public int AddOrUpdate(Question model)
         {
             int result = 0;
-            using (var db = new ExamDbContext())
+            using(var db= new ExamDbContext())
             {
-                if (model.Id > 0)
+                if(model.Id > 0)
                 {
-                    db.Quizs.Update(model);
+                    db.Questions.Update(model);
                 }
                 else
                 {
-                    db.Quizs.Add(model);
+                    db.Questions.Add(model);
                 }
 
                 db.SaveChanges();
@@ -28,11 +29,11 @@ namespace Exam.Services
             return result;
         }
 
-        public void AddRange(IEnumerable<Quiz> models)
+        public void AddRange(IEnumerable<Question> models)
         {
             using (var db = new ExamDbContext())
             {
-                db.Quizs.AddRange(models);
+                db.Questions.AddRange(models);
                 db.SaveChanges();
             }
         }
@@ -44,8 +45,8 @@ namespace Exam.Services
             {
                 try
                 {
-                    var model = db.Quizs.Find(id);
-                    db.Quizs.Remove(model);
+                    var model = db.Questions.Find(id);
+                    db.Questions.Remove(model);
                     db.SaveChanges();
                     result = true;
                 }
@@ -57,21 +58,21 @@ namespace Exam.Services
             return result;
         }
 
-        public Quiz Get(int id)
+        public Question Get(int id)
         {
-            Quiz res = null;
+            Question res = null;
             using (var db = new ExamDbContext())
             {
-                res = db.Quizs.Find(id);
+               res=db.Questions.Find(id);
             }
             return res;
         }
 
-        public IEnumerable<Quiz> GetAll()
+        public IEnumerable<Question> GetAll()
         {
             using (var db = new ExamDbContext())
             {
-                return db.Quizs.ToList();
+                return db.Questions.ToList();
             }
         }
     }

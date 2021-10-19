@@ -22,6 +22,26 @@ namespace Exam.Services
                 return quizServices;
             }
         }
+        QuestionService questionServices;
+        public QuestionService QuestionServices
+        {
+            get
+            {
+                if (questionServices == null)
+                    questionServices = new QuestionService();
+                return questionServices;
+            }
+        }
+        AnswerService answerServices;
+        public AnswerService AnswerServices
+        {
+            get
+            {
+                if (answerServices == null)
+                    answerServices = new AnswerService();
+                return answerServices;
+            }
+        }
         UserService userServices;
         public UserService UserServices
         {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Exam.Services
 {
-    public class UserService
+    public class UserService:IServiceInterface<User>
     {
         public static User GetUserByUsername(string Username)
         {
@@ -16,6 +16,31 @@ namespace Exam.Services
                 result = context.Users.Where(u => u.Username == Username).FirstOrDefault();
             }
             return result;
+        }
+
+        public int AddOrUpdate(User model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddRange(IEnumerable<User> models)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> GetAll()
+        {
+            throw new NotImplementedException();
         }
     }
 }
