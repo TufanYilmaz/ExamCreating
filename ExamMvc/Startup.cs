@@ -1,18 +1,18 @@
-using Exam.Data;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 
-namespace Exam
+namespace ExamMvc
 {
     public class Startup
     {
@@ -26,12 +26,18 @@ namespace Exam
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(mvcOpt=> { mvcOpt.EnableEndpointRouting = false; });
-            //services.AddRazorPages();
+            services.AddControllersWithViews();
+            services.AddSession();
+            //services.AddMvc(config =>
+            //{
+            //    var policy = new AuthorizationPolicyBuilder()
+            //            .RequireAuthenticatedUser()
+            //            .Build();
+            //    config.Filters.Add(new Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter(policy));
+            //});
+            services.AddMvc();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                         .AddCookie(o => o.LoginPath = new PathString("/Auth/Index"));
-            //var connection = Configuration.GetConnectionString("DefaultConnection");
-            //services.AddDbContext<ExamContext>(op => op.UseSqlite(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,32 +49,21 @@ namespace Exam
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Home/Error");
             }
-
             app.UseStaticFiles();
-
-            app.UseMvc(routes=>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseAuthentication();
+            app.UseSession();
 
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseAuthentication();
-            //app.UseCookieAuthentication(options =>
-            //{
-            //    options.AutomaticAuthenticate = true;
-            //    options.AutomaticChallenge = true;
-            //    options.LoginPath = "/Home/Login";
-            //});
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

@@ -1,13 +1,16 @@
-﻿using Exam.Models;
+﻿using ExamMvc.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Exam.Controllers
+namespace ExamMvc.Controllers
 {
     [AllowAnonymous]
     public class AuthController : Controller
@@ -28,6 +31,7 @@ namespace Exam.Controllers
                     var claimIdentity = new ClaimsIdentity(claims, "Login");
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                         new ClaimsPrincipal(claimIdentity));
+                    HttpContext.Session.SetString("username", tUser.Username);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -39,9 +43,8 @@ namespace Exam.Controllers
             {
                 ViewBag.LoginError = "Kullanıcı Bulunamadı";
             }
-            
+
             return View("Index");
         }
-
     }
 }

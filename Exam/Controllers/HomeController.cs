@@ -12,7 +12,19 @@ namespace Exam.Controllers
     {
         public IActionResult Index()
         {
-            //Services.Services.GetUsers();
+            var model = Services.Services.Instance.QuizServices.GetAll();
+            return View(model);
+        }
+        public IActionResult Delete(int Id)
+        {
+            return View();
+        }
+        public IActionResult NewQuiz()
+        {
+            return View();
+        }
+        public IActionResult ShowQuiz(int Id)
+        {
             return View();
         }
     }
