@@ -12,7 +12,7 @@
                     <a class="text-warning" asp-area="" asp-controller="Home" asp-action="NewQuiz">Yeni</a>
                 </th>
                 <th>@Html.DisplayNameFor(model=>model.Caption)</th>
-                <th>Tarih</th>
+                <th>@Html.DisplayNameFor(model => model.CreatedDate)</th>
                 <th></th>
             </tr>
         </thead>
@@ -22,12 +22,14 @@
             @foreach (var item in Model)
             {
             <tr>
-                <th>@i++</th>
-                <th>@item].Caption</th>
-                <th>Tarih</th>
+                <th>@(i++)</th>
+                <th>@item.RefTitle</th>
+                <th>@item.CreatedDate</th>
                 <th>
-                @*<a href="/Home/Delete/@item" class="btn btn-danger" id="btnDelete">Sil</a>*@
-                    @Html.ActionLink("Sil", "Delete", new {@class= "btn btn-danger" ,Id=item.Id})
+                    @*<a href="/Home/Delete/@item" class="btn btn-danger" id="btnDelete">Sil</a>*@
+                    @Html.ActionLink("Sil", "Delete", 
+                   new { @class = "btn btn-danger", Id = item.Id }, 
+                   new { onclick = "return confirm('Bu sınavı bütün soruları ile birlikte silmek istediğinize emin misiniz?');" })
                 </th>
             </tr>
             }

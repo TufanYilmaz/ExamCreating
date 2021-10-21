@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ExamMvc.Services
 {
-    public class Services
+    public class DataServices
     {
-        public static Services Instance { get; } = new Services();
-        Services()// private constructor ile sadece tek Instance kullanımı garanti ediliyor.
+        public static DataServices Instance { get; } = new DataServices();
+        DataServices()// private constructor ile sadece tek Instance kullanımı garanti ediliyor.
         {
 
         }

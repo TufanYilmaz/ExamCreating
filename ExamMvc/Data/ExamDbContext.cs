@@ -24,6 +24,14 @@ namespace ExamMvc.Data
         protected override void OnConfiguring(DbContextOptionsBuilder options)
            => options.UseSqlite($"Filename=./ExamDb.db");
 
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+        //    modelBuilder.Entity<Quiz>()
+        //    .HasOptional(a => a.Questions)
+        //    .WithOptionalDependent()
+        //    .WillCascadeOnDelete(true);
+        //}
 
     }
 }

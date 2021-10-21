@@ -14,6 +14,8 @@ namespace ExamMvc.Models
         public string Caption { get; set; }
         public string RefUrl { get; set; }
         public string RefTitle { get; set; }
+        [Display(Name = "Tarih")]
+        public string CreatedDate { get; set; }
         [NotMapped]
         public QuizReferance QuizReferance{ get; set; }
         public List<Question> Questions { get; set; } = new List<Question>();

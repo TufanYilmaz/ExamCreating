@@ -14,8 +14,8 @@ namespace ExamMvc.Models
         public string QuestionContent { get; set; }
         public Quiz Quiz { get; set; }
         public List<Answer> Answers { get; set; } = new List<Answer>();
+        [NotMapped]
         public char RightAnswerLetter { get; set; }
-
         public Question()
         {
 

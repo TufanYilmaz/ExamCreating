@@ -1,5 +1,6 @@
 ﻿using ExamMvc.Data;
 using ExamMvc.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +45,7 @@ namespace ExamMvc.Services
             {
                 try
                 {
-                    var model = db.Quizs.Find(id);
+                    var model = db.Quizs.Include("Questions").Include("Questions.Answers").Where(e => e.Id == id).First();
                     db.Quizs.Remove(model);
                     db.SaveChanges();
                     result = true;
@@ -62,7 +63,7 @@ namespace ExamMvc.Services
             Quiz res = null;
             using (var db = new ExamDbContext())
             {
-                res = db.Quizs.Find(id);
+                res = db.Quizs.Include("Questions").Include("Questions.Answers").Where(m => m.Id == id).FirstOrDefault();
             }
             return res;
         }
@@ -71,7 +72,8 @@ namespace ExamMvc.Services
         {
             using (var db = new ExamDbContext())
             {
-                return db.Quizs.ToList();
+
+                return db.Quizs.Include("Questions").Include("Questions.Answers").ToList();
             }
         }
     }

@@ -11,6 +11,7 @@ namespace ExamMvc.Models.ViewModels
         public List<QuizReferance> QuizReferances { get; set; } = new List<QuizReferance>();
         public Quiz Quiz { get; set; } = new Quiz();
         public string QuizContent { get; set; }
+
         public QuizViewModel()
         {
         }

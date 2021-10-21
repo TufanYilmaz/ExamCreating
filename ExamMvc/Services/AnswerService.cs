@@ -56,7 +56,17 @@ namespace ExamMvc.Services
             }
             return result;
         }
-
+        public void DeleteRange(List<Answer> answers)
+        {
+            DeleteRange(answers.Select(m => m.Id).ToArray());
+        }
+        public void DeleteRange(params int[] answerIds)
+        {
+            foreach (var Id in answerIds)
+            {
+                Delete(Id);
+            }
+        }
         public Answer Get(int id)
         {
             Answer res = null;

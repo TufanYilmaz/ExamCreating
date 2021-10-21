@@ -1,5 +1,6 @@
 ﻿using ExamMvc.Models;
 using ExamMvc.Models.ViewModels;
+using ExamMvc.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,12 +37,19 @@ namespace ExamMvc.Controllers
 
         public IActionResult Index()
         {
-            var users = Services.Services.Instance.UserServices.GetUserByUsername("twofun");
-            return View();
+            var quizs = DataServices.Instance.QuizServices.GetAll();
+            return View(quizs);
         }
         public IActionResult Delete(int Id)
         {
-            return View();
+            var quiz = DataServices.Instance.QuizServices.Get(Id);
+            for (int i = 0; i < quiz.Questions.Count; i++)
+            {
+                DataServices.Instance.AnswerServices.DeleteRange(quiz.Questions[i].Answers);
+            }
+            DataServices.Instance.QuestionServices.DeleteRange(quiz.Questions);
+            DataServices.Instance.QuizServices.Delete(Id);
+            return RedirectToAction("Index");
         }
         public IActionResult NewQuiz()
         {
@@ -52,8 +60,30 @@ namespace ExamMvc.Controllers
         [HttpPost]
         public IActionResult AddQuiz(QuizViewModel quizView)
         {
+            if(!ModelState.IsValid)
+            {
+                return View("NewQuiz");
+            }
+            quizView.Quiz.CreatedDate = DateTime.Now.ToString("yyyy-MM-dd mm:ss");
+            var quizId = DataServices.Instance.QuizServices.AddOrUpdate(quizView.Quiz);
+            
 
-            return View("Index");
+            for (int i = 0; i < quizView.Quiz.Questions.Count; i++)
+            {
+                quizView.Quiz.Questions[i].Quiz= DataServices.Instance.QuizServices.Get(quizId);
+                var QuestionId = DataServices.Instance.QuestionServices.AddOrUpdate(quizView.Quiz.Questions[i]);
+                for (int j = 0; j < quizView.Quiz.Questions[i].Answers.Count; j++)
+                {
+                    quizView.Quiz.Questions[i].Answers[j].Question= DataServices.Instance.QuestionServices.Get(QuestionId);
+                    bool isRight = false;
+                    if (quizView.Quiz.Questions[i].RightAnswerLetter == quizView.Quiz.Questions[i].Answers[j].AnswerLetter)
+                        isRight = true;
+                    quizView.Quiz.Questions[i].Answers[j].IsRight = isRight;
+                    DataServices.Instance.AnswerServices.AddOrUpdate(quizView.Quiz.Questions[i].Answers[j]);
+                }
+            }
+
+            return RedirectToAction("Index");
         }
         public IActionResult ShowQuiz(int Id)
         {

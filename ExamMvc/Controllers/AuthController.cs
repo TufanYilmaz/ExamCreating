@@ -22,7 +22,7 @@ namespace ExamMvc.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(User user, string ReturnUrl)
         {
-            var tUser = Services.Services.Instance.UserServices.GetUserByUsername(user.Username);
+            var tUser = Services.DataServices.Instance.UserServices.GetUserByUsername(user.Username);
             if (tUser != null)
             {
                 if (tUser.Password == user.Password.ToString())
