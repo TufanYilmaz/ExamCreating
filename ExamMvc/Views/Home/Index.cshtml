@@ -26,10 +26,10 @@
                 <th>@item.RefTitle</th>
                 <th>@item.CreatedDate</th>
                 <th>
-                    @*<a href="/Home/Delete/@item" class="btn btn-danger" id="btnDelete">Sil</a>*@
-                    @Html.ActionLink("Sil", "Delete", 
-                   new { @class = "btn btn-danger", Id = item.Id }, 
-                   new { onclick = "return confirm('Bu sınavı bütün soruları ile birlikte silmek istediğinize emin misiniz?');" })
+                   @Html.ActionLink("Sınava Gir","TakeQuiz", new {  Id = item.Id },new { @class = "btn btn-rounded btn-primary" })
+                    @Html.ActionLink("Sil", "Delete",
+                   new {  Id = item.Id },
+                   new { @class = "btn btn-rounded btn-danger", onclick = "return confirm('Bu sınavı bütün soruları ile birlikte silmek istediğinize emin misiniz?');" })
                 </th>
             </tr>
             }

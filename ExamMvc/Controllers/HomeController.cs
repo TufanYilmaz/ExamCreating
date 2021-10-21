@@ -85,9 +85,15 @@ namespace ExamMvc.Controllers
 
             return RedirectToAction("Index");
         }
-        public IActionResult ShowQuiz(int Id)
+        public IActionResult TakeQuiz(int Id)
         {
-            return View();
+            var quiz = DataServices.Instance.QuizServices.Get(Id);
+            var content = WebCrowlerHelper.WebCrowlerClient.instance.GetWiredStroyContentFromUrl(quiz.RefUrl);
+            QuizViewModel model = new QuizViewModel();
+            model.QuizContent = content;
+            model.Quiz = quiz;
+
+            return View(model);
         }
         public async Task<IActionResult> Logout()
         {
@@ -99,6 +105,23 @@ namespace ExamMvc.Controllers
         {
             var content = WebCrowlerHelper.WebCrowlerClient.instance.GetWiredStroyContentFromUrl(URL);
             return Content(content);
+        }
+        public IActionResult EvaluateQuiz(QuizViewModel model)
+        {
+            var viewmModel = new List<QuestionEvaluate>();
+            int i = 0;
+            foreach (var question in model.Quiz.Questions)
+            {
+                var temp = new QuestionEvaluate
+                {
+                    QuestionId = question.Id,
+                    QuestionNumber = i++,
+                    SelectedAnswer = question.SelectedAnswerLetter,
+                    Right = question.SelectedAnswerLetter == question.Answers.Where(a => a.IsRight).First().AnswerLetter
+                };
+                viewmModel.Add(temp);
+            }
+            return Json(viewmModel);
         }
     }
 }
