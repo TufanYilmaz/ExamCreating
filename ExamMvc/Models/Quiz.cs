@@ -10,9 +10,12 @@ namespace ExamMvc.Models
     {
         //[Key]
         //public int Id { get; set; }
+        [Display(Name ="Başlık")]
         public string Caption { get; set; }
         public string RefUrl { get; set; }
         public string RefTitle { get; set; }
-        public List<Question> Questions { get; set; }
+        [NotMapped]
+        public QuizReferance QuizReferance{ get; set; }
+        public List<Question> Questions { get; set; } = new List<Question>();
     }
 }

@@ -9,4 +9,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="5.0.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WebCrowlerHelper\WebCrowlerHelper.csproj" />
+  </ItemGroup>
+
 </Project>

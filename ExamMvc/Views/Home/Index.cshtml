@@ -1,21 +1,36 @@
-﻿
+﻿@model IEnumerable<ExamMvc.Models.Quiz>
 @{
     ViewData["Title"] = "Sınavlar Sayfası";
 }
 
 <div class="text-center">
     <h1 class="display-4">Sınavlar</h1>
-    <table>
+    <table class="table table-bordered">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Başlık</th>
+                <th>
+                    <a class="text-warning" asp-area="" asp-controller="Home" asp-action="NewQuiz">Yeni</a>
+                </th>
+                <th>@Html.DisplayNameFor(model=>model.Caption)</th>
                 <th>Tarih</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-
+            @{ int i = 1; }
+            @if(Model!=null)
+            @foreach (var item in Model)
+            {
+            <tr>
+                <th>@i++</th>
+                <th>@item].Caption</th>
+                <th>Tarih</th>
+                <th>
+                @*<a href="/Home/Delete/@item" class="btn btn-danger" id="btnDelete">Sil</a>*@
+                    @Html.ActionLink("Sil", "Delete", new {@class= "btn btn-danger" ,Id=item.Id})
+                </th>
+            </tr>
+            }
         </tbody>
     </table>
 </div>

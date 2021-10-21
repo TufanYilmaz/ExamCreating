@@ -36,12 +36,12 @@ namespace ExamMvc.Controllers
                 }
                 else
                 {
-                    ViewBag.LoginError = "Kullanıcı adı ve parola uyuşmazlığı";
+                    TempData["LoginError"]="Kullanıcı adı ve parola uyuşmazlığı";
                 }
             }
             else
             {
-                ViewBag.LoginError = "Kullanıcı Bulunamadı";
+                TempData["LoginError"] = "Kullanıcı Bulunamadı";
             }
 
             return View("Index");

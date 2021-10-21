@@ -8,6 +8,11 @@ namespace WebCrowlerHelper
 {
     public class WebCrowlerClient
     {
+        public static WebCrowlerClient instance { get; private set; } = new WebCrowlerClient();
+        WebCrowlerClient()
+        {
+
+        }
         public async Task<string> FullWebPageContent(string URL)
         {
             var httpClient = new HttpClient();
@@ -48,7 +53,7 @@ namespace WebCrowlerHelper
             return links;
         }
         
-        public  string GetWiredStroyContentFromUrl(string URL)
+        public string GetWiredStroyContentFromUrl(string URL)
         {
             var divPContent = GetHtmlDocument(FullWebPageContent(URL).Result).DocumentNode.SelectNodes("//div[@class='body__inner-container']/p")
                 .Select(t=>t.InnerText);

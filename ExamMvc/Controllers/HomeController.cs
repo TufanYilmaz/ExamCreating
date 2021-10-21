@@ -1,4 +1,5 @@
 ﻿using ExamMvc.Models;
+using ExamMvc.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,7 +45,15 @@ namespace ExamMvc.Controllers
         }
         public IActionResult NewQuiz()
         {
-            return View();
+            var quizrefer = WebCrowlerHelper.WebCrowlerClient.instance.GetWiredLastFiveMostRecent();
+            var model = new QuizViewModel(quizrefer,4,4);
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult AddQuiz(QuizViewModel quizView)
+        {
+
+            return View("Index");
         }
         public IActionResult ShowQuiz(int Id)
         {
@@ -54,7 +63,12 @@ namespace ExamMvc.Controllers
         {
             await HttpContext.SignOutAsync();
             return RedirectToAction("Index", "Auth");
-
+        }
+        [HttpPost]
+        public IActionResult GetReferancedQuizContent(string URL)
+        {
+            var content = WebCrowlerHelper.WebCrowlerClient.instance.GetWiredStroyContentFromUrl(URL);
+            return Content(content);
         }
     }
 }

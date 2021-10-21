@@ -1,0 +1,18 @@
+﻿@model ExamMvc.Models.Question
+@{
+    Layout = "";
+}
+<div class="form-group row">
+    <div class="col">
+        @Html.LabelFor(m => m.QuestionContent)
+        @Html.TextBoxFor(m => m.QuestionContent, new { @class = "form-control col-lg-6", placeholder = "Soru" })
+    </div>
+</div>
+    @for (int i = 0; i < Model.Answers.Count; i++)
+    {
+        <div class="form-group row">
+            @Html.HiddenFor(m => m.Answers[i].Id)
+            @Html.TextBoxFor(m => m.Answers[i].AnswerLetter, new { @class = "col-sm-1 col-form-label disabled", disabled = "disabled" })
+            @Html.TextBoxFor(m => m.Answers[i].AnswerContent, new { @class = "form-control col-lg-6 col-form-label" })
+        </div>
+    }

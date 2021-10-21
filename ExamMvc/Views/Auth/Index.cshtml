@@ -1,6 +1,7 @@
 ﻿@model ExamMvc.Models.User
 @{
     Layout = "";
+    var error = TempData["LoginError"] as string;
 }
 
 
@@ -122,11 +123,17 @@
 <body>
     <div class="login-page">
         <div class="form">
+            
             @using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "login-form" }))
             {
                 @Html.TextBoxFor(m => Model.Username, new { placeholder = "Kullanıcı" })
                 @Html.PasswordFor(m => Model.Password, new { placeholder = "Parola" })
-                @Html.AntiForgeryToken()
+                @Html.AntiForgeryToken()@if (!string.IsNullOrEmpty(error))
+                {
+                    <div class=" alert alert-danger">
+                         <p>@error</p>
+                    </div>
+                }
                 <button>Giriş</button>
 
 
