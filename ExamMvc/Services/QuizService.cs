@@ -63,7 +63,7 @@ namespace ExamMvc.Services
             Quiz res = null;
             using (var db = new ExamDbContext())
             {
-                res = db.Quizs.Include("Questions").Include("Questions.Answers").Where(m => m.Id == id).FirstOrDefault();
+                res = db.Quizs.AsNoTracking().Include("Questions").Include("Questions.Answers").Where(m => m.Id == id).FirstOrDefault();
             }
             return res;
         }

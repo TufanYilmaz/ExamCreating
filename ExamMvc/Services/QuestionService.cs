@@ -1,5 +1,6 @@
 ﻿using ExamMvc.Data;
 using ExamMvc.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,7 +74,7 @@ namespace ExamMvc.Services
             Question res = null;
             using (var db = new ExamDbContext())
             {
-               res=db.Questions.Find(id);
+               res=db.Questions.AsNoTracking().Where(m => m.Id == id).FirstOrDefault();
             }
             return res;
         }

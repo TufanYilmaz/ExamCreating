@@ -62,26 +62,37 @@ namespace ExamMvc.Controllers
         {
             if(!ModelState.IsValid)
             {
-                return View("NewQuiz");
+                return RedirectToAction("NewQuiz");
             }
-            quizView.Quiz.CreatedDate = DateTime.Now.ToString("yyyy-MM-dd mm:ss");
-            var quizId = DataServices.Instance.QuizServices.AddOrUpdate(quizView.Quiz);
-            
-
             for (int i = 0; i < quizView.Quiz.Questions.Count; i++)
             {
-                quizView.Quiz.Questions[i].Quiz= DataServices.Instance.QuizServices.Get(quizId);
-                var QuestionId = DataServices.Instance.QuestionServices.AddOrUpdate(quizView.Quiz.Questions[i]);
                 for (int j = 0; j < quizView.Quiz.Questions[i].Answers.Count; j++)
                 {
-                    quizView.Quiz.Questions[i].Answers[j].Question= DataServices.Instance.QuestionServices.Get(QuestionId);
                     bool isRight = false;
                     if (quizView.Quiz.Questions[i].RightAnswerLetter == quizView.Quiz.Questions[i].Answers[j].AnswerLetter)
                         isRight = true;
                     quizView.Quiz.Questions[i].Answers[j].IsRight = isRight;
-                    DataServices.Instance.AnswerServices.AddOrUpdate(quizView.Quiz.Questions[i].Answers[j]);
                 }
             }
+
+            quizView.Quiz.CreatedDate = DateTime.Now.ToString("yyyy-MM-dd mm:ss");
+            var quizId = DataServices.Instance.QuizServices.AddOrUpdate(quizView.Quiz);
+            
+
+            //for (int i = 0; i < quizView.Quiz.Questions.Count; i++)
+            //{
+            //    quizView.Quiz.Questions[i].Quiz= DataServices.Instance.QuizServices.Get(quizId);
+            //    var QuestionId = DataServices.Instance.QuestionServices.AddOrUpdate(quizView.Quiz.Questions[i]);
+            //    for (int j = 0; j < quizView.Quiz.Questions[i].Answers.Count; j++)
+            //    {
+            //        quizView.Quiz.Questions[i].Answers[j].Question= DataServices.Instance.QuestionServices.Get(QuestionId);
+            //        bool isRight = false;
+            //        if (quizView.Quiz.Questions[i].RightAnswerLetter == quizView.Quiz.Questions[i].Answers[j].AnswerLetter)
+            //            isRight = true;
+            //        quizView.Quiz.Questions[i].Answers[j].IsRight = isRight;
+            //        DataServices.Instance.AnswerServices.AddOrUpdate(quizView.Quiz.Questions[i].Answers[j]);
+            //    }
+            //}
 
             return RedirectToAction("Index");
         }
