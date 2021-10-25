@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ExamMvc.Models
+namespace EntityLayer.Concrete
 {
     [Table("Users")]
     public class User : BaseModel

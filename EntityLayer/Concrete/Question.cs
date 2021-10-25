@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-namespace ExamMvc.Models
+namespace EntityLayer.Concrete
 {
     [Table("Questions")]
     public class Question : BaseModel

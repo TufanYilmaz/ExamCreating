@@ -1,18 +1,20 @@
-﻿using ExamMvc.Data;
-using ExamMvc.Models;
+﻿using DataAccessLayer.Concrete;
+using DataAccessLayer.Interface;
+using EntityLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ExamMvc.Services
+namespace DataAccessLayer.Repositories
 {
-    public class QuizService : IServiceInterface<Quiz>
+    public class QuizRepository : IQuizDal
     {
+        readonly Context db = new();
         public int AddOrUpdate(Quiz model)
         {
             int result = 0;
-            using (var db = new ExamDbContext())
+
             {
                 if (model.Id > 0)
                 {
@@ -31,7 +33,7 @@ namespace ExamMvc.Services
 
         public void AddRange(IEnumerable<Quiz> models)
         {
-            using (var db = new ExamDbContext())
+
             {
                 db.Quizs.AddRange(models);
                 db.SaveChanges();
@@ -41,27 +43,37 @@ namespace ExamMvc.Services
         public bool Delete(int id)
         {
             var result = false;
-            using (var db = new ExamDbContext())
+            try
             {
-                try
-                {
-                    var model = db.Quizs.Include("Questions").Include("Questions.Answers").Where(e => e.Id == id).First();
-                    db.Quizs.Remove(model);
-                    db.SaveChanges();
-                    result = true;
-                }
-                catch (Exception)
-                {
+                var model = db.Quizs.Include("Questions").Include("Questions.Answers").Where(e => e.Id == id).First();
+                db.Quizs.Remove(model);
+                db.SaveChanges();
+                result = true;
+            }
+            catch (Exception)
+            {
 
-                }
             }
             return result;
+        }
+
+        public void DeleteRange(params int[] quizIds)
+        {
+            foreach (var Id in quizIds)
+            {
+                Delete(Id);
+            }
+        }
+
+        public void DeleteRange(IEnumerable<Quiz> quizs)
+        {
+            DeleteRange(quizs.Select(m => m.Id).ToArray());
         }
 
         public Quiz Get(int id)
         {
             Quiz res = null;
-            using (var db = new ExamDbContext())
+
             {
                 res = db.Quizs.AsNoTracking().Include("Questions").Include("Questions.Answers").Where(m => m.Id == id).FirstOrDefault();
             }
@@ -70,10 +82,8 @@ namespace ExamMvc.Services
 
         public IEnumerable<Quiz> GetAll()
         {
-            using (var db = new ExamDbContext())
             {
-
-                return db.Quizs.Include("Questions").Include("Questions.Answers").ToList();
+                return db.Quizs.Include("Questions").Include("Questions.Answers").AsNoTracking().AsEnumerable();
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using ExamMvc.Models;
+﻿using EntityLayer.Concrete;
+using ExamMvc.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -15,6 +16,7 @@ namespace ExamMvc.Controllers
     [AllowAnonymous]
     public class AuthController : Controller
     {
+        BusinessLayer.Concrete.UserManager userManager = new BusinessLayer.Concrete.UserManager();
         public IActionResult Index()
         {
             return View();
@@ -22,7 +24,8 @@ namespace ExamMvc.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(User user, string ReturnUrl)
         {
-            var tUser = Services.DataServices.Instance.UserServices.GetUserByUsername(user.Username);
+            var tUser = userManager.GetUserByName(user.Username);
+            
             if (tUser != null)
             {
                 if (tUser.Password == user.Password.ToString())

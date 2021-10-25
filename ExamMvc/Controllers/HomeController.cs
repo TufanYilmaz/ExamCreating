@@ -1,6 +1,6 @@
-﻿using ExamMvc.Models;
+﻿using BusinessLayer.Concrete;
+using ExamMvc.Models;
 using ExamMvc.Models.ViewModels;
-using ExamMvc.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +16,15 @@ namespace ExamMvc.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        QuizManager quizManager = new QuizManager();
+        AnswerManager answerManager = new AnswerManager();
+        QuestionManager questionManager = new QuestionManager();
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
-
-       
         public IActionResult Privacy()
         {
             return View();
@@ -37,18 +38,12 @@ namespace ExamMvc.Controllers
 
         public IActionResult Index()
         {
-            var quizs = DataServices.Instance.QuizServices.GetAll();
+            var quizs = quizManager.GetAll();
             return View(quizs);
         }
         public IActionResult Delete(int Id)
         {
-            var quiz = DataServices.Instance.QuizServices.Get(Id);
-            for (int i = 0; i < quiz.Questions.Count; i++)
-            {
-                DataServices.Instance.AnswerServices.DeleteRange(quiz.Questions[i].Answers);
-            }
-            DataServices.Instance.QuestionServices.DeleteRange(quiz.Questions);
-            DataServices.Instance.QuizServices.Delete(Id);
+            quizManager.Delete(Id, true);
             return RedirectToAction("Index");
         }
         public IActionResult NewQuiz()
@@ -64,41 +59,12 @@ namespace ExamMvc.Controllers
             {
                 return RedirectToAction("NewQuiz");
             }
-            for (int i = 0; i < quizView.Quiz.Questions.Count; i++)
-            {
-                for (int j = 0; j < quizView.Quiz.Questions[i].Answers.Count; j++)
-                {
-                    bool isRight = false;
-                    if (quizView.Quiz.Questions[i].RightAnswerLetter == quizView.Quiz.Questions[i].Answers[j].AnswerLetter)
-                        isRight = true;
-                    quizView.Quiz.Questions[i].Answers[j].IsRight = isRight;
-                }
-            }
-
-            quizView.Quiz.CreatedDate = DateTime.Now.ToString("yyyy-MM-dd mm:ss");
-            var quizId = DataServices.Instance.QuizServices.AddOrUpdate(quizView.Quiz);
-            
-
-            //for (int i = 0; i < quizView.Quiz.Questions.Count; i++)
-            //{
-            //    quizView.Quiz.Questions[i].Quiz= DataServices.Instance.QuizServices.Get(quizId);
-            //    var QuestionId = DataServices.Instance.QuestionServices.AddOrUpdate(quizView.Quiz.Questions[i]);
-            //    for (int j = 0; j < quizView.Quiz.Questions[i].Answers.Count; j++)
-            //    {
-            //        quizView.Quiz.Questions[i].Answers[j].Question= DataServices.Instance.QuestionServices.Get(QuestionId);
-            //        bool isRight = false;
-            //        if (quizView.Quiz.Questions[i].RightAnswerLetter == quizView.Quiz.Questions[i].Answers[j].AnswerLetter)
-            //            isRight = true;
-            //        quizView.Quiz.Questions[i].Answers[j].IsRight = isRight;
-            //        DataServices.Instance.AnswerServices.AddOrUpdate(quizView.Quiz.Questions[i].Answers[j]);
-            //    }
-            //}
-
+            quizManager.AddOrUpdate(quizView.Quiz);
             return RedirectToAction("Index");
         }
         public IActionResult TakeQuiz(int Id)
         {
-            var quiz = DataServices.Instance.QuizServices.Get(Id);
+            var quiz = quizManager.Get(Id);
             var content = WebCrowlerHelper.WebCrowlerClient.instance.GetWiredStroyContentFromUrl(quiz.RefUrl);
             QuizViewModel model = new QuizViewModel();
             model.QuizContent = content;

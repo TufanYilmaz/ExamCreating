@@ -1,26 +1,29 @@
-﻿using ExamMvc.Data;
-using ExamMvc.Models;
+﻿using DataAccessLayer.Concrete;
+using DataAccessLayer.Interface;
+using EntityLayer.Concrete;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace ExamMvc.Services
+namespace DataAccessLayer.Repositories
 {
-    public class AnswerService : IServiceInterface<Answer>
+    public class AnswerRepository : IAnswerDal
     {
+        Context db = new Context();
+
         public int AddOrUpdate(Answer model)
         {
             int result = 0;
-            using (var db = new ExamDbContext())
+             
             {
-                if (model.Id > 0) 
+                if (model.Id > 0)
                 {
                     db.Answers.Update(model);
                 }
                 else
                 {
-                    db.Answers.Add(model); 
+                    db.Answers.Add(model);
                 }
                 db.SaveChanges();
                 result = model.Id;
@@ -30,7 +33,7 @@ namespace ExamMvc.Services
 
         public void AddRange(IEnumerable<Answer> models)
         {
-            using (var db = new ExamDbContext())
+             
             {
                 db.Answers.AddRange(models);
                 db.SaveChanges();
@@ -40,7 +43,7 @@ namespace ExamMvc.Services
         public bool Delete(int id)
         {
             var result = false;
-            using (var db = new ExamDbContext())
+             
             {
                 try
                 {
@@ -56,10 +59,10 @@ namespace ExamMvc.Services
             }
             return result;
         }
-        public void DeleteRange(List<Answer> answers)
-        {
-            DeleteRange(answers.Select(m => m.Id).ToArray());
-        }
+        //public void DeleteRange(List<Answer> answers)
+        //{
+        //    DeleteRange(answers.Select(m => m.Id).ToArray());
+        //}
         public void DeleteRange(params int[] answerIds)
         {
             foreach (var Id in answerIds)
@@ -67,10 +70,16 @@ namespace ExamMvc.Services
                 Delete(Id);
             }
         }
+
+        public void DeleteRange(IEnumerable<Answer> answers)
+        {
+            DeleteRange(answers.Select(m => m.Id).ToArray());
+        }
+
         public Answer Get(int id)
         {
             Answer res = null;
-            using (var db = new ExamDbContext())
+             
             {
                 res = db.Answers.Find(id);
             }
@@ -79,9 +88,9 @@ namespace ExamMvc.Services
 
         public IEnumerable<Answer> GetAll()
         {
-            using (var db = new ExamDbContext())
+             
             {
-                return db.Answers.ToList();
+                return db.Answers.AsNoTracking().AsEnumerable();
             }
         }
     }

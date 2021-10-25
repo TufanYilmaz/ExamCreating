@@ -1,17 +1,18 @@
-﻿using ExamMvc.Models;
+﻿using DataAccessLayer.Concrete;
+using DataAccessLayer.Interface;
+using EntityLayer.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace ExamMvc.Services
+namespace DataAccessLayer.Repositories
 {
-    public class UserService:IServiceInterface<User>
+    public class UserRepository : IUserDal
     {
         public User GetUserByUsername(string Username)
         {
             User result = null;
-            using(Data.ExamDbContext context=new Data.ExamDbContext())
+            using (Context context = new Context())
             {
                 result = context.Users.Where(u => u.Username == Username)?.FirstOrDefault();
             }
@@ -39,6 +40,16 @@ namespace ExamMvc.Services
         }
 
         public IEnumerable<User> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteRange(params int[] modelIds)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteRange(IEnumerable<User> models)
         {
             throw new NotImplementedException();
         }

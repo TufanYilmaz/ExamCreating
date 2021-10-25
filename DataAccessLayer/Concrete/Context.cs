@@ -1,13 +1,14 @@
-﻿using ExamMvc.Models;
+﻿using EntityLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace ExamMvc.Data
+namespace DataAccessLayer.Concrete
 {
-    public class ExamDbContext:DbContext
+    public class Context : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Answer> Answers { get; set; }
@@ -15,7 +16,7 @@ namespace ExamMvc.Data
         public DbSet<Quiz> Quizs { get; set; }
         public string DbPath { get; private set; }
 
-        public ExamDbContext()
+        public Context()
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);
@@ -23,15 +24,5 @@ namespace ExamMvc.Data
         }
         protected override void OnConfiguring(DbContextOptionsBuilder options)
            => options.UseSqlite($"Filename=./ExamDb.db");
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    base.OnModelCreating(modelBuilder);
-        //    modelBuilder.Entity<Quiz>()
-        //    .HasOptional(a => a.Questions)
-        //    .WithOptionalDependent()
-        //    .WillCascadeOnDelete(true);
-        //}
-
     }
 }
